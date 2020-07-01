@@ -81,6 +81,7 @@ class OptimizeSavedModel(base.Job):
     def run(self):
         # Normalize feeds and fetch
         fetch = self.fetch.split(",") if isinstance(self.fetch, str) else self.fetch
+        fetch += ['init_all_tables']
         feeds = self.feeds.split(",") if isinstance(self.feeds, str) else self.feeds
 
         # Find latest SavedModel export in path_saved_model
@@ -114,7 +115,7 @@ class OptimizeSavedModel(base.Job):
                 filename_tensor_name=None,
                 output_graph=None,
                 clear_devices=True,
-                initializer_nodes=None,
+                initializer_nodes='init_all_tables',
                 variable_names_blacklist=",".join(self.blacklisted_variables),
                 input_saved_model_dir=latest,
                 saved_model_tags=["serve"],

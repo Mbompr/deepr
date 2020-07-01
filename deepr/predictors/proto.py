@@ -36,6 +36,13 @@ class ProtoPredictor(base.Predictor):
         with session.graph.as_default():
             import_graph_def(path, name="model")
 
+            try:
+                print('\n\nINIT ALL TABLES\n\n')
+                session.run(tf.get_default_graph().get_operation_by_name('init_all_tables'))
+            except KeyError:
+                print('KEY ERROR')
+                pass
+
         # Retrieve feed tensors (add and remove "model" scope prefix)
         feed_tensors = {
             "/".join(name.split("/")[1:]): tensor
